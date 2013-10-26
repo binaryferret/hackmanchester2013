@@ -46,16 +46,12 @@ public class Controller
     public void acceptIncoming(Socket socket) throws IOException
     {
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        while(!socket.isClosed())
+        String inLine; 
+        while((inLine = in.readLine())!=null)
         {
-            String inLine; 
-            while((inLine = in.readLine())!=null)
-            {
-                LOG.log(Level.INFO, "Message In: " + inLine);
-                Message msg = createNewMessage(inLine);
-                socket.close();
-                handleMessage(msg);                
-            }
+            LOG.log(Level.INFO, "Message In: " + inLine);
+            Message msg = createNewMessage(inLine);
+            handleMessage(msg);                 
         }
     }
     

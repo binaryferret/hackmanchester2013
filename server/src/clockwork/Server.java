@@ -24,7 +24,7 @@ public class Server
     {   
         try
         {
-            Model       model       = new Model("");
+            Model       model       = new Model("42b9db73e0a38cb995e61f5b3d1347b61e8969d1");
             Controller  controller  = new Controller(model);
         
             //Create a listener socket this will take incoming messages from the URL 
