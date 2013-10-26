@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.concurrent.locks.Lock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -73,7 +76,7 @@ public class Controller
             String[] pair = field.split("=");
             if(pair.length == 2)
             {
-                if(pair[0].toLowerCase().equals("from"))
+                if(pair[0].toLowerCase().equals("phone"))
                 {
                     number = pair[1];
                 }
@@ -91,13 +94,46 @@ public class Controller
     private void handleMessage(Message msg)
     {
         //Create/Get Phone
-        model.getPhone(msg.getNumber());
-                
+        Phone phone = model.getPhone(msg.getNumber());
+                        
+        //Send Message from phone to ai, and then response to phone.
+        phone.sendMessage(model.getKey(), msg.getMessage());
+    }
+    
+    /**
+     * Applies a lock on Phones member, and goes through all phones to see
+     * if they have timedOut. Then unlocks. 
+     */
+    private synchronized void cullPhones()
+    {
         
-        //TODO Remove Dummy data
+        //TODO Comment
+        ArrayList<String>      phonesToRemove = new ArrayList<>();
         
+        //TODO Lock
+        HashMap<String, Phone> phones = model.getPhones();
         
-        //Send Message To Phone
-         
+        //If no phones then just return.
+        if(phones.size() <= 0)
+        {
+            return;
+        }
+        
+        Phone[] phonesArray = phones.values().toArray(new Phone[0]);
+        
+        if(phonesArray!=null)
+        {
+            for(Phone phone : phonesArray)
+            {
+                if(phone.timedOut(model.getMaxTimeout()))
+                {
+                    
+                }
+            }
+        }
+        else
+        {
+            //TODO Just return for now.             
+        }
     }
 }
