@@ -138,4 +138,14 @@ public class Phone
             LOG.log(Level.SEVERE, "Exception with bot", excep);            
         }
     }
+    
+    /**
+     * Say goodbye to the user, and then tidy up and cleanup instances etc.
+     * 
+     * @param msg 
+     */
+    public void bye(String msg)
+    {        
+        //TODO
+    }
 }

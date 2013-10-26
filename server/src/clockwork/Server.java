@@ -1,5 +1,6 @@
 package clockwork;
 
+import clockwork.exception.InvalidFieldException;
 import clockwork.exception.InvalidKeyException;
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -24,7 +25,7 @@ public class Server
     {   
         try
         {
-            Model       model       = new Model("42b9db73e0a38cb995e61f5b3d1347b61e8969d1");
+            Model       model       = new Model("");
             Controller  controller  = new Controller(model);
         
             //Create a listener socket this will take incoming messages from the URL 
@@ -33,9 +34,16 @@ public class Server
             while(!listener.isClosed())
             {
                 Socket incoming = listener.accept();
-                controller.acceptIncoming(incoming);                
+                try
+                {
+                    controller.acceptIncoming(incoming);                
+                }
+                catch(InvalidFieldException excep)
+                {
+                    //Just continue for now. //TODO Handle better
+                }
             }                        
-        }
+        }        
         catch(InvalidKeyException excep)
         {
             LOG.log(Level.SEVERE, "Unable to start. Invalid Key", excep);

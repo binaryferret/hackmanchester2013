@@ -1,13 +1,12 @@
 package clockwork;
 
+import clockwork.exception.InvalidFieldException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.locks.Lock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -43,8 +42,13 @@ public class Controller
      * //TODO tidy up
      * @param incoming 
      */
-    public void acceptIncoming(Socket socket) throws IOException
+    public void acceptIncoming(Socket socket) throws IOException, InvalidFieldException
     {
+        if(socket == null)
+        {
+            LOG.log(Level.INFO, "Incoming socket is null. Throwing IOException");
+            throw new IOException("Incoming Socket null. ");
+        }
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         String inLine; 
         while((inLine = in.readLine())!=null)
@@ -55,11 +59,11 @@ public class Controller
         }
     }
     
-    private Message createNewMessage(String incomingMsg)
+    private Message createNewMessage(String incomingMsg) throws InvalidFieldException
     {
         if(incomingMsg == null)
         {
-            //TODO handle null.
+            throw new InvalidFieldException("Controller.createNewMessage incomingMsg parameter is null.");
         }
 
         String number   = null;
@@ -72,7 +76,7 @@ public class Controller
             String[] pair = field.split("=");
             if(pair.length == 2)
             {
-                if(pair[0].toLowerCase().equals("phone"))
+                if(pair[0].toLowerCase().equals("from"))
                 {
                     number = pair[1];
                 }
@@ -83,8 +87,34 @@ public class Controller
             }
         }
         
-        //TODO Handle is valid message? If not then throw something.
+        if(!isNumberValid(number))
+        {
+            throw new InvalidFieldException("Controller.createNewMessage recieved invalid number: number = " + number);            
+        }
+        if(!isMsgValid(msg))
+        {
+            throw new InvalidFieldException("Controller.createNewMessage recieved invalid msg: msg = " + msg);            
+        }
+        
         return new Message(number, incomingMsg);
+    }
+    
+    private boolean isNumberValid(String number)
+    {
+        if(number == null || number.length() == 0)
+        {
+            return false;
+        }
+        return true;
+    }
+    
+    private boolean isMsgValid(String msg)
+    {
+        if(msg == null || msg.length() == 0)
+        {
+            return false;            
+        }
+        return true;
     }
     
     private void handleMessage(Message msg)
@@ -123,13 +153,19 @@ public class Controller
             {
                 if(phone.timedOut(model.getMaxTimeout()))
                 {
-                    
+                    phonesToRemove.add(phone.getNumber());
                 }
             }
         }
         else
         {
-            //TODO Just return for now.             
+            return;             
+        }
+        
+        for(String number : phonesToRemove)
+        {
+            Phone phone = phones.remove(number);
+            phone.bye("This ends the conversation");
         }
     }
 }
