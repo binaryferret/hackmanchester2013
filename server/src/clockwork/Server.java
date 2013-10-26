@@ -13,11 +13,6 @@ import java.util.logging.Logger;
  * @author BuckleWoods
  */
 public class Server {
-
-    //TEST NUMBERS
-    static String natePhone = "07905309185";
-    
-    static String key = "42b9db73e0a38cb995e61f5b3d1347b61e8969d1";
     
     private static final Logger LOG = Logger.getLogger(Server.class.getName());    
     
