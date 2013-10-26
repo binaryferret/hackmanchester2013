@@ -96,7 +96,7 @@ public class Controller
             throw new InvalidFieldException("Controller.createNewMessage recieved invalid msg: msg = " + msg);            
         }
         
-        return new Message(number, incomingMsg);
+        return new Message(number, msg);
     }
     
     private boolean isNumberValid(String number)
