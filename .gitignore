@@ -8,3 +8,6 @@
 # Netbeans Jiggery Pokery
 *.properties
 server/nbproject/project.properties
+
+#Caching
+Webby/cache/
