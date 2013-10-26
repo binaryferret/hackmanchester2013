@@ -88,7 +88,7 @@ $content = mysqli_real_escape_string( $connection, $content );
 $msg_id = mysqli_real_escape_string( $connection, $msg_id );
 
 // Do the query
-
+$query = "INSERT INTO `log` (`from`, `to`, `content`, `msg_id`, `time`) VALUES ( '".$from."', '".$to."', '".$content."', '".$msg_id."', ".time()." )";
 echo "QUERY: ".$query."\n\n";
 if( mysqli_query( $connection, $query ) ):
 	printf( "%d Row inserted.\n", mysqli_affected_rows($connection) );
