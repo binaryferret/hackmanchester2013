@@ -1,7 +1,10 @@
+<?php
+  $test = "PHP WOO!";
+?>
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Artificial Friend</title>
+    <title>Artificial Friend - <?php echo $test; ?></title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
