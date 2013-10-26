@@ -25,7 +25,7 @@ public class Controller
      * @param model - the model that the Controller will use. 
      */
     public Controller(Model model)
-    {
+    {        
         if(model == null)
         {
             //TODO Handle this!

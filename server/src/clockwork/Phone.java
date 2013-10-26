@@ -148,4 +148,10 @@ public class Phone
     {        
         //TODO
     }
+
+    @Override
+    public String toString() {
+        return "Phone{" + "number=" + number + ", botSession=" + botSession + ", lastActivity=" + lastActivity + '}';
+    }
+        
 }

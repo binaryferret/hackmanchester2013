@@ -24,4 +24,9 @@ public class Message
     {
         return msg;
     }
+
+    @Override
+    public String toString() {
+        return "Message{" + "number=" + number + ", msg=" + msg + '}';
+    }        
 }
