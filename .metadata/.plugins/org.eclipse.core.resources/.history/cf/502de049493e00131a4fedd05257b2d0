@@ -1,0 +1,40 @@
+package uk.co.hackmanchester.chatterbot.core;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Core {
+	private List threadPool;
+	
+	public Core(int noOfThreads) {
+		threadPool = new ArrayList<Worker>();
+
+		for(int i =0; i < noOfThreads; i++)
+			threadPool.add(new Worker());
+		
+	}
+	
+	//Returns reponse from bot
+	public String messageBot(long mobileNumber, String msg) {
+		String retVal = "Bugger, somethin's brocken!";
+		
+		
+		
+	}
+	
+	private Worker getIdleThread() {
+		
+	}
+
+	private class Worker extends Thread {
+		
+		public Worker() {
+			
+		}
+		
+		@Override
+		public void run() {
+			
+		}
+	}
+}

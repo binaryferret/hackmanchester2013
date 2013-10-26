@@ -1,0 +1,31 @@
+package uk.co.hackmanchester.chatterbot.core;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Core {
+	private List threadPool;
+	
+	public Core(int noOfThreads) {
+		threadPool = new ArrayList<Worker>();
+
+		for(int i =0; i < 0; i++)
+			threadPool.add(new Worker());
+		
+	}
+	
+	//Returns reponse from bot
+	public String 
+
+	private class Worker extends Thread {
+		
+		public Worker() {
+			
+		}
+		
+		@Override
+		public void run() {
+			
+		}
+	}
+}

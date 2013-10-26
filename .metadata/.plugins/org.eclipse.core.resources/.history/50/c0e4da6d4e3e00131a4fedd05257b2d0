@@ -1,0 +1,11 @@
+package uk.co.hackmanchester.chatterbot.test;
+
+import uk.co.hackmanchester.chatterbot.core.Core;
+
+public class Test {
+
+	@org.junit.Test
+	public void test() throws InterruptedException {
+	}
+
+}

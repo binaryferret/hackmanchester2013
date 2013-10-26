@@ -1,0 +1,17 @@
+package uk.co.hackmanchester.chatterbot.core;
+
+public class Core {
+	private List threadPool;
+
+	private class Worker extends Thread {
+		
+		public Worker() {
+			
+		}
+		
+		@Override
+		public void run() {
+			
+		}
+	}
+}

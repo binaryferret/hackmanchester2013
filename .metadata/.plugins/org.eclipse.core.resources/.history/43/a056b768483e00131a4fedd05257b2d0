@@ -1,0 +1,8 @@
+package uk.co.hackmanchester.chatterbot.core;
+
+public class Core {
+
+	private class Worker {
+		
+	}
+}

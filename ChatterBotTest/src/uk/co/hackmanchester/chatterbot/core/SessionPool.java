@@ -17,8 +17,10 @@ public final class SessionPool {
 		
 		if(sPool.dataMap.containsKey(new Long(mobileNumber)))
 			retVal = sPool.dataMap.get(new Long(mobileNumber));
-		else
-			retVal = sPool.createSesh(mobileNumber);
+		else {
+			sPool.createSesh(mobileNumber);
+			retVal = sPool.dataMap.get(new Long(mobileNumber));
+		}
 		
 		
 		return retVal;

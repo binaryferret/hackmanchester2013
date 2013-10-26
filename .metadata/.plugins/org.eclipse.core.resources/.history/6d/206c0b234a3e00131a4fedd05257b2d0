@@ -1,0 +1,63 @@
+package uk.co.hackmanchester.chatterbot.core;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.code.chatterbotapi.ChatterBotSession;
+
+public class Core {
+	private List threadPool;
+	private int maxThreads;
+	
+	public Core(int maxThreads) {
+		threadPool = new ArrayList<Worker>();
+
+		this.maxThreads = maxThreads;
+		
+	}
+	
+	//Returns reponse from bot
+	public String messageBot(long mobileNumber, String msg) {
+		String retVal = "Bugger, somethin's brocken!";
+		
+		Worker worker = getThread();
+		
+	}
+	
+	//This could potentially fuck everything up :)
+	private Worker getThread() {
+		Worker retVal = null;
+		
+		if(threadPool.size() < maxThreads)
+			retVal = new Worker();
+		else {
+			try {
+				wait(1000);
+			} 
+			catch (InterruptedException e) { //Should never be interrupted
+				e.printStackTrace();
+			}
+			retVal = getThread();
+		}
+		
+		return retVal;
+	}
+
+	private class Worker extends Thread {
+		long mobileNumber;
+		String message;
+		
+		public Worker(long mobileNumber, String message) {
+			this.mobileNumber = mobileNumber;
+			this.message = message;
+		}
+		
+		@Override
+		public void run() {
+			ChatterBotSession sesh = SessionPool.getSession(mobileNumber);
+			
+			
+			threadPool.remove(this);
+		}
+	}
+}

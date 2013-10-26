@@ -1,0 +1,17 @@
+package uk.co.hackmanchester.chatterbot.test;
+
+import uk.co.hackmanchester.chatterbot.core.Core;
+
+public class Test {
+
+	@org.junit.Test
+	public void test() throws InterruptedException {
+		Core c = new Core(5);
+		
+		c.messageToBot(447527156515L, "Hello there");
+		
+
+		c.messageToBot(447527156515L, "My name is Hal, what is yours?");
+	}
+
+}

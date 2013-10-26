@@ -1,0 +1,16 @@
+package uk.co.hackmanchester.chatterbot.core;
+
+public class Core {
+
+	private class Worker extends Thread {
+		
+		public Worker(long mobileNumber, String message) {
+			
+		}
+		
+		@Override
+		public void run() {
+			
+		}
+	}
+}

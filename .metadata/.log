@@ -8,3 +8,6 @@ Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product com.android.
 
 !ENTRY org.eclipse.core.net 1 0 2013-10-26 14:10:18.393
 !MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16|sandbox.dev.bbc.co.uk|*.sandbox.dev.bbc.co.uk by an external source. This value will be overwritten using the values from the preferences
+
+!ENTRY org.eclipse.ui 4 4 2013-10-26 15:48:07.711
+!MESSAGE Referenced part does not exist yet: org.eclipse.ui.views.ProblemView.

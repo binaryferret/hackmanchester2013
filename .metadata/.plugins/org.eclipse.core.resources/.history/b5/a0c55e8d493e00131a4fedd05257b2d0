@@ -1,0 +1,46 @@
+package uk.co.hackmanchester.chatterbot.core;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Core {
+	private List threadPool;
+	private int maxThreads;
+	
+	public Core(int maxThreads) {
+		threadPool = new ArrayList<Worker>();
+
+		this.maxThreads = maxThreads;
+		
+	}
+	
+	//Returns reponse from bot
+	public String messageBot(long mobileNumber, String msg) {
+		String retVal = "Bugger, somethin's brocken!";
+		
+		
+		
+	}
+	
+	private Worker getThread() {
+		Worker retVal = null;
+		
+		if(threadPool.size() < maxThreads)
+			retVal = new Worker();
+		else {
+			wait(1000);
+		}
+	}
+
+	private class Worker extends Thread {
+		
+		public Worker() {
+			
+		}
+		
+		@Override
+		public void run() {
+			
+		}
+	}
+}

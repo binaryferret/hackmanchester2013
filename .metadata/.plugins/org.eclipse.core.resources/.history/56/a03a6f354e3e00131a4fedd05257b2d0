@@ -1,0 +1,16 @@
+package uk.co.hackmanchester.chatterbot.test;
+
+import uk.co.hackmanchester.chatterbot.core.Core;
+
+public class Test {
+
+	@org.junit.Test
+	public void test() {
+		Core c = new Core(5);
+		
+		c.messageToBot(447527156515L, "Hello there");
+		
+		wait(1000);
+	}
+
+}
