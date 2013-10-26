@@ -1,0 +1,8 @@
+package uk.co.hackmanchester.chatterbot.core;
+
+import com.google.code.chatterbotapi.*;
+
+public final class SessionPool {
+
+	private HashMap<long, Chatter>
+}

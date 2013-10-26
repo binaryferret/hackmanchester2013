@@ -1,0 +1,10 @@
+package uk.co.hackmanchester.chatterbot.core;
+
+import java.util.HashMap;
+
+import com.google.code.chatterbotapi.*;
+
+public final class SessionPool {
+
+	private ConncurrentHashMap<Long, ChatterBotSession> sessionPool;
+}

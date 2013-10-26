@@ -11,7 +11,6 @@ public class Main {
 
         ChatterBot bot2 = factory.create(ChatterBotType.PANDORABOTS, "b0dafd24ee35a477");
         ChatterBotSession bot2session = bot2.createSession();
-        
 
         String s = "Hi";
         while (true) {

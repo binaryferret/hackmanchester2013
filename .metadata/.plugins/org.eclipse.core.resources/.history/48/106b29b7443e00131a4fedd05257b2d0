@@ -1,0 +1,34 @@
+package uk.co.hackmanchester.chatterbot.core;
+
+import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
+
+import com.google.code.chatterbotapi.*;
+
+public final class SessionPool {
+	
+	public static ChatterBotSession getSession(long mobileNumber) throws Exception {
+		ChatterBotSession retVal = null;
+		
+		if(sPool.dataMap.containsKey(new Long(mobileNumber)))
+			retVal = sPool.dataMap.get(new Long(mobileNumber));
+		else
+			retVal = sPool.createSesh(mobileNumber);
+		
+		
+		return retVal;
+	}
+
+	private ConcurrentHashMap<Long, ChatterBotSession> dataMap;
+	private static SessionPool sPool = new SessionPool();
+	private static ChatterBotFactory factory = new ChatterBotFactory();
+	
+	private SessionPool() {
+		dataMap = new ConcurrentHashMap<Long, ChatterBotSession>();
+	}
+	private ChatterBotSession createSesh(long mobileNumber) throws Exception {
+        ChatterBot bot = factory.create(ChatterBotType.CLEVERBOT);
+        
+        return dataMap.put(new Long(mobileNumber), bot.createSession());
+	}
+}

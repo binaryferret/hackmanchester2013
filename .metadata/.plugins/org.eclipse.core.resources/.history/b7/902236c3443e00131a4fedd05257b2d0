@@ -20,6 +20,8 @@ public class Main {
 
             s = bot2session.think(s);
             System.out.println("bot2> " + s);
+            
+            System.in.read()
 
             s = bot1session.think(s);
         }
