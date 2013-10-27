@@ -96,5 +96,6 @@ public class Server
             LOG.log(Level.SEVERE, "Exception thrown" + excep.getMessage(), excep);
         }
         LOG.log(Level.INFO, "Server shutting down...");
+        System.exit(-1);
     }
 }
