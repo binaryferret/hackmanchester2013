@@ -24,7 +24,7 @@ public class Controller
      * phones. 
      */
     private Culler  culler;
-    private static final Logger LOG = Logger.getLogger(Controller.class.getName());
+    private static final Logger LOG = Logger.getLogger("MainLogger");
     
     /**
      * Controller Constructor that takes a Model instance that it will use.

@@ -2,13 +2,17 @@ package clockwork;
 
 import clockwork.exception.InvalidKeyException;
 import java.util.HashMap;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.w3c.dom.ls.LSProgressEvent;
 
 /**
  *
  * @author BuckleWoods (Nathan Buckley, Andrew Isherwood, Joe Westwood)
  */
 public class Model 
-{
+{    
     /**
      * static final long that is the default max timeout allowed
      * for inactivity before pruning phones.
@@ -26,6 +30,12 @@ public class Model
      */
     private String key;
     
+    private Properties credentials;
+    
+    private static final Logger LOG = Logger.getLogger("MainLogger");
+    
+    
+    
     /**
      * Will store Phone objects.
      * Need to keep hold of them in order for maintaining instance between
@@ -33,13 +43,17 @@ public class Model
      */
     private HashMap<String, Phone> phones; 
     
-    public Model(String key) throws InvalidKeyException
+    public Model(Properties credentials) throws InvalidKeyException
     {
+        key = credentials.getProperty("CLOCKWORK_API_KEY");
+        
+        this.credentials = credentials;
+        
         if(key == null || key.length() == 0)
         {
             throw new InvalidKeyException("Attempting to create Model with invalid_key: Key = " + key);
         }
-        this.key    = key;
+        
         phones      = new HashMap<>();     
         
         maxTimeout = DEFAULT_MAX_TIMEOUT;
@@ -66,8 +80,10 @@ public class Model
         //need to create it. 
         if(phone == null)
         {
+            LOG.log(Level.INFO, "Phone: " + number + "\nDoes Not exist in system. Creating and initiising bot.");
+            
             //Create phone
-            phone = new Phone(number);
+            phone = new Phone(number, credentials);
             
             //Store phone.
             phones.put(phone.getNumber(), phone);            
@@ -84,5 +100,30 @@ public class Model
     public long getMaxTimeout()
     {
         return maxTimeout;
-    }        
+    }    
+    
+    public Properties getCredentials()
+    {
+        return credentials;
+    }
+    
+    public String getDatabaseName()
+    {
+        return credentials.getProperty("DATABASE_NAME");
+    }
+    
+    public String getDatabaseUser()
+    {
+        return credentials.getProperty("DATABASE_USER");
+    }
+    
+    public String getDatabasePass()
+    {
+        return credentials.getProperty("DATABASE_PASS");
+    }
+    
+    public String getDatabaseHost()
+    {
+        return credentials.getProperty("DATABASE_HOST");
+    }
 }

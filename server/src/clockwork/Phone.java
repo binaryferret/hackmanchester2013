@@ -10,9 +10,9 @@ import com.google.code.chatterbotapi.ChatterBotSession;
 import com.google.code.chatterbotapi.ChatterBotType;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -44,11 +44,14 @@ public class Phone
     private long lastActivity;
     //TODO When ending a session, send a bye message.
     
+    private Properties credentials;
+    
     private static final String driver = "com.mysql.jdbc.Driver";
     
-    private static final Logger LOG = Logger.getLogger(Phone.class.getName());    
-    public Phone(String number)
+    private static final Logger LOG = Logger.getLogger("MainLogger");    
+    public Phone(String number, Properties credentials)
     {
+        this.credentials = credentials;
         try
         {
             Class.forName("com.mysql.jdbc.Driver");
@@ -57,36 +60,6 @@ public class Phone
         {
             //TODO
         }
-//            
-//            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/hackmanchester?user=hackmanchester&password=adminadmin");
-//            Statement statement = conn.createStatement();
-//            ResultSet result = statement.executeQuery("SELECT * FROM logs");
-//            LOG.log(Level.INFO, "TO STRING = " + result.toString());
-//            
-//            if(result!=null)
-//            {
-//                result.close();
-//            }
-//            
-//            if(statement!=null)
-//            {
-//                statement.close();
-//            }
-//            
-//            if(conn!=null)
-//            {
-//                conn.close();
-//            }
-//            
-//        }
-//        catch(ClassNotFoundException excep)
-//        {
-//            LOG.log(Level.SEVERE, "Unable to load jdbc driver...");
-//        }
-//        catch(SQLException excep)
-//        {
-//            LOG.log(Level.SEVERE, "SQLException...", excep);
-//        }
         
         this.number = number;
         botSession  = null;
@@ -213,7 +186,34 @@ public class Phone
     private void storeBotResponse(String msg)
     {
         LOG.log(Level.INFO, "Storing bot response in database");
-        //TODO Actually store.
+        
+        try
+        {           
+            Connection conn = DriverManager.getConnection("jdbc:mysql://"+ credentials.getProperty("DATABASE_HOST") +"/" + credentials.getProperty("DATABASE_NAME"), credentials.getProperty("DATABASE_USER"), credentials.getProperty("DATABASE_PASS"));
+            PreparedStatement preppedStatement = conn.prepareCall("INSERT INTO `log` (`from`, `to`, `content`, `msg_id`, `time`) VALUES (?, ?, ?, ?, ?)");
+
+            //from
+            preppedStatement.setString(1, "BOT");
+            //to
+            preppedStatement.setString(2, number);
+            //content
+            preppedStatement.setString(3, msg);
+            //msg_id
+            preppedStatement.setString(4, "");
+            //time
+            preppedStatement.setLong(5, System.currentTimeMillis());
+            
+            preppedStatement.execute();
+                                    
+            preppedStatement.close();
+
+            conn.close();
+
+        }
+        catch(SQLException excep)
+        {
+            LOG.log(Level.SEVERE, "SQLException...", excep);
+        }
     }
     
     /**
