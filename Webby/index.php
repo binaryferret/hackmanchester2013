@@ -66,11 +66,7 @@
               <div class="control-group">
                 <div class="right">
                   <div class="row">
-<<<<<<< HEAD
-                    <input type="text" id="inputPhone" placeholder="447860033078">  
-=======
                     <input type="text" id="inputPhone" placeholder="447717214711" value="447905309185">
->>>>>>> be531008599cdfc0e8017da841b6c9eb6e47189e
                     <button type="submit" class="btn">Sign in</button>
 
                   </div>
@@ -81,14 +77,10 @@
           </div>
 
           <div class="span6">
-<<<<<<< HEAD
-            <h3>Message History for <span id="msgHist">...</span></h4>
-=======
             <h4>Message History for <span id="msgHist">...</span></h4>
             <div id="conversation">
 
             </div>
->>>>>>> be531008599cdfc0e8017da841b6c9eb6e47189e
           </div>
         </div>
         <hr>
@@ -98,13 +90,13 @@
         <h3>What does it do?</h3>
 
         <ol>
-          <li>Mobile phone user sends a message</li>  
-          <li>Clockwork receives a message and posts it to a hosted page</li>  
-          <li>Hosted pages handles and logs it and forwards it to a local service</li>  
-          <li>Service manages chat sessions and sends the message to CleverBot</li>  
-          <li>CleverBot replys to the message</li>  
-          <li>Service sends the message to the message sender via clockwork api</li>  
-          <li>Mobile Phone user receives a reply</li>  
+          <li>Mobile phone user sends a message</li>
+          <li>Clockwork receives a message and posts it to a hosted page</li>
+          <li>Hosted pages handles and logs it and forwards it to a local service</li>
+          <li>Service manages chat sessions and sends the message to CleverBot</li>
+          <li>CleverBot replys to the message</li>
+          <li>Service sends the message to the message sender via clockwork api</li>
+          <li>Mobile Phone user receives a reply</li>
         </ol>
 
 <!--
