@@ -175,7 +175,11 @@ public class Phone
                     throw new ClockworkException("Unable to send SMS. Tried three times");
                 }
                 i++;
-            }                        
+            } 
+            /**
+             * Update last activity.
+             */
+            lastActivity = System.currentTimeMillis();
         }
         catch(ClockworkException excep) 
         {
