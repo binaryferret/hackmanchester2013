@@ -1,6 +1,7 @@
 package clockwork;
 
 import clockwork.exception.InvalidFieldException;
+import com.clockworksms.ClockworkException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,13 +12,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * 
- * @author BuckleWoods
+ * //TODO Comment!
+ * @author BuckleWoods (Nathan Buckley, Andrew Isherwood, Joe Westwood)
  */
 public class Controller 
 {
-    private Model model;
-    
+    private Model   model;
+    /**
+     * Thread that every 5 minutes will 
+     * call cullPhones to remove inactive 
+     * phones. 
+     */
+    private Culler  culler;
     private static final Logger LOG = Logger.getLogger(Controller.class.getName());
     
     /**
@@ -32,6 +38,9 @@ public class Controller
         }
         
         this.model = model;
+        
+        culler = new Culler();  
+        culler.start();
     }
     
     /**
@@ -132,7 +141,7 @@ public class Controller
      */
     private synchronized void cullPhones()
     {
-        
+        LOG.log(Level.INFO, "Culling Inactive Phones");
         //TODO Comment
         ArrayList<String>      phonesToRemove = new ArrayList<>();
         
@@ -153,6 +162,7 @@ public class Controller
             {
                 if(phone.timedOut(model.getMaxTimeout()))
                 {
+                    LOG.log(Level.INFO, "Phone: " + phone.getNumber() + "Timed Out. Removing");
                     phonesToRemove.add(phone.getNumber());
                 }
             }
@@ -165,7 +175,39 @@ public class Controller
         for(String number : phonesToRemove)
         {
             Phone phone = phones.remove(number);
-            phone.bye("This ends the conversation");
+            try{
+                phone.bye(model.getKey(), "This ends the conversation");
+            }
+            catch(ClockworkException excep)
+            {
+                //Log exception, but no then continue.
+                LOG.log(Level.SEVERE, "Tried to say bye to phone[" + phone.getNumber() + "] threw exception.", excep);
+            }
         }
+    }
+    
+    class Culler extends Thread
+    {
+        private boolean running = false;
+        private long    lastCull;
+        @Override
+        public void run() 
+        {
+            running = true;
+            lastCull = System.currentTimeMillis();
+            while(running)
+            {                
+                try
+                {
+                    Thread.sleep(300000l);
+                }
+                catch(InterruptedException excep)
+                {
+                    
+                }
+                cullPhones();
+            }
+        }
+        
     }
 }

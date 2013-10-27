@@ -9,15 +9,27 @@ import java.util.HashMap;
  */
 public class Model 
 {
-    public static long DEFAULT_MAX_TIMEOUT = 10000l;
+    /**
+     * static final long that is the default max timeout allowed
+     * for inactivity before pruning phones.
+     */
+    public static final long DEFAULT_MAX_TIMEOUT = 600000l;
     
-    //TODO Comment
+    /**
+     * Max amount of miliseconds that timeout is allowed 
+     * before clearing out a Phone.
+     */
     private long   maxTimeout;
     
-    //TODO Comment. 
-    private String key;
     /**
-     * Will store Phone objects that hold an instance. 
+     * Var that holds unique Clockwork API Key.
+     */
+    private String key;
+    
+    /**
+     * Will store Phone objects.
+     * Need to keep hold of them in order for maintaining instance between
+     * service and chatterbot api instances.
      */
     private HashMap<String, Phone> phones; 
     
@@ -68,7 +80,7 @@ public class Model
         this.maxTimeout = maxTimeout;
     }
     
-    //TODO
+    
     public long getMaxTimeout()
     {
         return maxTimeout;

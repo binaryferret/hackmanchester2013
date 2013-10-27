@@ -8,6 +8,11 @@ import com.google.code.chatterbotapi.ChatterBot;
 import com.google.code.chatterbotapi.ChatterBotFactory;
 import com.google.code.chatterbotapi.ChatterBotSession;
 import com.google.code.chatterbotapi.ChatterBotType;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -39,9 +44,50 @@ public class Phone
     private long lastActivity;
     //TODO When ending a session, send a bye message.
     
+    private static final String driver = "com.mysql.jdbc.Driver";
+    
     private static final Logger LOG = Logger.getLogger(Phone.class.getName());    
     public Phone(String number)
     {
+        try
+        {
+            Class.forName("com.mysql.jdbc.Driver");
+        }
+        catch(ClassNotFoundException excep)
+        {
+            //TODO
+        }
+//            
+//            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/hackmanchester?user=hackmanchester&password=adminadmin");
+//            Statement statement = conn.createStatement();
+//            ResultSet result = statement.executeQuery("SELECT * FROM logs");
+//            LOG.log(Level.INFO, "TO STRING = " + result.toString());
+//            
+//            if(result!=null)
+//            {
+//                result.close();
+//            }
+//            
+//            if(statement!=null)
+//            {
+//                statement.close();
+//            }
+//            
+//            if(conn!=null)
+//            {
+//                conn.close();
+//            }
+//            
+//        }
+//        catch(ClassNotFoundException excep)
+//        {
+//            LOG.log(Level.SEVERE, "Unable to load jdbc driver...");
+//        }
+//        catch(SQLException excep)
+//        {
+//            LOG.log(Level.SEVERE, "SQLException...", excep);
+//        }
+        
         this.number = number;
         botSession  = null;
         //update last message with system current time. 
@@ -74,6 +120,11 @@ public class Phone
      */
     public boolean timedOut(long timeout)
     {
+        long current = System.currentTimeMillis();
+        if(current - lastActivity > timeout)
+        {
+            return true;
+        }        
         return false;
     }
     
@@ -109,23 +160,23 @@ public class Phone
             }
             
             //Send Message to AI and get response.
-            String botResponse = botSession.think(msg);
+            String botResponse = botSession.think(msg);            
             
-            //Send Response from AI via SMS        
-            SMS sms = new SMS(number, botResponse);
-            ClockWorkSmsService service = new ClockWorkSmsService(key);
-            ClockworkSmsResult  result  = service.send(sms);
+            //LOG Response
+            LOG.log(Level.INFO, "Bot Response: " + botResponse);
+            //Store response in database chat logs.
+            storeBotResponse(botResponse);
             
-            if(result.isSuccess())
+            //Send Response from AI via SMS Try three times.
+            int i = 0;
+            while(!sendSMS(key, botResponse))
             {
-                //TODO Timestamp and log message in database and log.
-                LOG.log(Level.INFO, "SENT");
-            }
-            else
-            {
-                //TODO Complete log.
-                LOG.log(Level.SEVERE, "");
-            }            
+                if(i==2)
+                {
+                    throw new ClockworkException("Unable to send SMS. Tried three times");
+                }
+                i++;
+            }                        
         }
         catch(ClockworkException excep)
         {
@@ -139,14 +190,40 @@ public class Phone
         }
     }
     
+    //TODO
+    private boolean sendSMS(String key, String msg) throws ClockworkException
+    {
+        SMS sms = new SMS(number, msg);
+        ClockWorkSmsService service = new ClockWorkSmsService(key);
+        ClockworkSmsResult  result  = service.send(sms);
+
+        if(result.isSuccess())
+        {
+            LOG.log(Level.INFO, "SENT");
+            return true;
+        }
+        else
+        {
+            //TODO Complete log.
+            LOG.log(Level.SEVERE, "");
+            return false;
+        }
+    }
+    
+    private void storeBotResponse(String msg)
+    {
+        LOG.log(Level.INFO, "Storing bot response in database");
+        //TODO Actually store.
+    }
+    
     /**
-     * Say goodbye to the user, and then tidy up and cleanup instances etc.
+     * Say goodbye to the user. 
      * 
      * @param msg 
      */
-    public void bye(String msg)
+    public void bye(String key, String msg) throws ClockworkException
     {        
-        //TODO
+        sendSMS(key, msg);
     }
 
     @Override
