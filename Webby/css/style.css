@@ -1,0 +1,24 @@
+.sidies {
+	width: 49%;
+	display: inline;
+}
+
+.right {
+	margin-left: 60px;
+}
+
+.visible {
+
+}
+
+.invisible {
+
+}
+
+.page {
+	height: 100%;
+}
+
+.lineBreak {
+	border: solid 1px black;
+}

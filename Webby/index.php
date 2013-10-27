@@ -18,47 +18,78 @@
   </head>
 
   <body>
-    <header>
-      <h1>Artificial Friend</h1>
-    </header>
+    <!-- Header -->
+    <div class="container">
 
-    <nav>
-      <ul class="nav nav-pills">
-        <li class="active">
-          <a href=".">Home</a>
-        </li>
-        <li>
-          <a href=".">Lorem Ipsum</a>
-        </li>
-        <li>
-          <a href=".">Dolor Amet</a>
-        </li>
-        <li>
-          <a href=".">Sit Amet</a>
-        </li>
-      </ul>
-    </nav>
 
+      <header>
+        <div class="row"><h1>Pinocchio</h1></div>
+      </header>
+    </div>
     <section class="hero-unit">
-      <p>They're programmed to talk to you!</p>
+      <section class="container">
 
-      <form class="form-horizontal" action=".">
-        <div class="control-group">
-          <label class="control-label" for="inputPhone">Phone</label>
-          <div class="controls">
-            <input type="text" id="inputPhone" placeholder="Phone">
+      <!-- INTRO -->
+        <div class="row page">
+
+          <div class="span6">
+            <h3>Txt <bold>07860033078</bold></h3>
+              <ul>
+                <li>When youre bored</li>
+                <li>and not near a computer</li>
+                <li>and dont have 3g</li>
+                <li>... or 4g</li>
+                <li>and you only have 2g</li>
+                <li> then send a message and have a chat!</li>  
+              </ul>
+          </div>
+
+          <div class="span6">
+            <p>Image of something</p>
           </div>
         </div>
-        <div class="control-group">
-          <div class="controls">
-            <button type="submit" class="btn">Sign in</button>
+
+        <hr>
+        <div class="text-center">
+          <p>Immune to logical paradoxes</p>
+        </div>
+
+        <hr>
+    <!-- CONVO LIST -->
+
+        <div class="row">
+
+          <div class="span6">
+            <h3>Peruse my Exchanges</h3>
+
+            <form class="form-horizontal" action=".">
+              <div class="control-group"> 
+                <div class="right">
+                  <div class="row">
+                    <input type="text" id="inputPhone" placeholder="447527156515">  
+                    <button type="submit" class="btn">Sign in</button>
+
+                  </div>
+                  <p>Enter your number and you can review your message history</p>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="span6">
+            <h4>Message History for <span id="msgHist">...</span></h4>
           </div>
         </div>
-      </form>
+        <hr>
+    <!-- ABOUT -->
 
-      <pre id="code"></pre>
 
+      </section>
     </section>
+
+
+
+    
 
     <footer class="text-center">
       <small>

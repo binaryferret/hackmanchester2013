@@ -56,7 +56,7 @@ else:
 	echo "OK.\n";
 endif;
 
-$msg = "from=".$from."&msg=".$content."&to=".$to."&msg_id=".$msg_id."\n";
+$msg = "from=".$from."&msg=".$content."\n";
 
 echo "Sending Message...";
 socket_write($socket, $msg, strlen($msg));
@@ -76,26 +76,26 @@ echo "OK.\n\n";
 	LOGGING TIME !
 */
 
-//$connection = mysqli_connect( $db["host"], $db["user"], $db["password"], $db["database"] );
-//if( mysqli_connect_errno($connection) ):
-//  echo "Failed to connect to MySQL: " . mysqli_connect_error();
-//endif;
-//
-//// Escape the input data
-//$from = mysqli_real_escape_string( $connection, $from );
-//$to = mysqli_real_escape_string( $connection, $to );
-//$content = mysqli_real_escape_string( $connection, $content );
-//$msg_id = mysqli_real_escape_string( $connection, $msg_id );
-//
-//// Do the query
-//$query = "INSERT INTO `log` (`from`, `to`, `content`, `msg_id`, `time`) VALUES ( '".$from."', '".$to."', '".$content."', '".$msg_id."', ".microtime()/1000." )";
-//echo "QUERY: ".$query."\n\n";
-//if( mysqli_query( $connection, $query ) ):
-//	printf( "%d Row inserted.\n", mysqli_affected_rows($connection) );
-//else:
-//	printf("Error: %s\n", mysqli_sqlstate($connection));
-//endif;
-//
-//mysqli_close( $connection );
+$connection = mysqli_connect( $db["host"], $db["user"], $db["password"], $db["database"] );
+if( mysqli_connect_errno($connection) ):
+  echo "Failed to connect to MySQL: " . mysqli_connect_error();
+endif;
+
+// Escape the input data
+$from = mysqli_real_escape_string( $connection, $from );
+$to = mysqli_real_escape_string( $connection, $to );
+$content = mysqli_real_escape_string( $connection, $content );
+$msg_id = mysqli_real_escape_string( $connection, $msg_id );
+
+// Do the query
+$query = "INSERT INTO `log` (`from`, `to`, `content`, `msg_id`, `time`) VALUES ( '".$from."', '".$to."', '".$content."', '".$msg_id."', ".time()." )";
+echo "QUERY: ".$query."\n\n";
+if( mysqli_query( $connection, $query ) ):
+	printf( "%d Row inserted.\n", mysqli_affected_rows($connection) );
+else:
+	printf("Error: %s\n", mysqli_sqlstate($connection));
+endif;
+
+mysqli_close( $connection );
 
 finish();
