@@ -8,7 +8,10 @@ import java.util.logging.Logger;
 import org.w3c.dom.ls.LSProgressEvent;
 
 /**
- *
+ * Model part of MC (sorry V). 
+ * 
+ * Contains the majority of the major data that the controller can gain access to. 
+ * 
  * @author BuckleWoods (Nathan Buckley, Andrew Isherwood, Joe Westwood)
  */
 public class Model 
@@ -30,8 +33,14 @@ public class Model
      */
     private String key;
     
+    /**
+     * Credentials that contain the various settings for the database etc.
+     */
     private Properties credentials;
     
+    /**
+     * Logger
+     */
     private static final Logger LOG = Logger.getLogger("MainLogger");
     
     
@@ -43,6 +52,12 @@ public class Model
      */
     private HashMap<String, Phone> phones; 
     
+    /**
+     * Main constructor for model. Takes credentials which is can use to get the
+     * various details on the database etc.
+     * @param credentials
+     * @throws InvalidKeyException 
+     */
     public Model(Properties credentials) throws InvalidKeyException
     {
         key = credentials.getProperty("CLOCKWORK_API_KEY");
@@ -69,6 +84,15 @@ public class Model
         return phones;
     }
     
+    /**
+     * Gets a stored phone from the collection of current users - Phone(s)
+     * If a phone does not exist, then it needs to be added using the 
+     * number that is taken as a parameter. 
+     * 
+     * Then returns either a newly created Phone or an existing phone. 
+     * @param number Unique ID used to identify a Phone. 
+     * @return Phone instance.
+     */
     public Phone getPhone(String number)
     {        
         Phone phone = null;
@@ -125,5 +149,18 @@ public class Model
     public String getDatabaseHost()
     {
         return credentials.getProperty("DATABASE_HOST");
+    }
+    
+    public int getDatabasePort()
+    {
+        try
+        {
+            return Integer.parseInt((String)credentials.getProperty("DATABASE_PORT"));
+        }
+        catch(NumberFormatException excep)
+        {
+            //Default port
+            return 6969;
+        }        
     }
 }

@@ -13,44 +13,62 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * //TODO Comment!
+ * Main logic class from the MC (Sorry V) pattern. 
+ * Contains the bulk of the core logic/backbone etc.
+ * 
  * @author BuckleWoods (Nathan Buckley, Andrew Isherwood, Joe Westwood)
  */
 public class Controller 
 {
+    /**
+     * Model that the controller will use for data.
+     */
     private Model   model;
     /**
      * Thread that every 5 minutes will 
      * call cullPhones to remove inactive 
-     * phones. 
+     * phones based on their timeout state.
      */
     private Culler  culler;
+    
+    /**
+     * Logger
+     */
     private static final Logger LOG = Logger.getLogger("MainLogger");
     
     /**
      * Controller Constructor that takes a Model instance that it will use.
      * @param model - the model that the Controller will use. 
      */
-    public Controller(Model model)
+    public Controller(Model model) throws Exception
     {        
         if(model == null)
         {
-            //TODO Handle this!
+            throw new Exception("Invalid Model attemped to be assigned");
         }
         
         this.model = model;
         
         culler = new Culler();  
+        
+    }
+    
+    /**
+     * Avoids having to start the culler during construction.
+     */
+    public void startCuller()
+    {
         culler.start();
     }
     
     /**
-     * Takes a socket. Gets data from it which should be sent in a particular
-     * format, initilises or grabs existing Phone object that should be associated
-     * with the message. Then closes the socket.
-     * 
-     * //TODO tidy up
-     * @param incoming 
+     * Accepts an incoming socket, reads the data that it should squirt up
+     * and then processes this data as a message.
+     * @param socket Socket that has just been accepted, and that it get data from.
+     
+     * @throws IOException
+     * @throws InvalidFieldException
+     * @throws InsufficiantBalanceException 
      */
     public void acceptIncoming(Socket socket) throws IOException, InvalidFieldException, InsufficiantBalanceException
     {
@@ -69,6 +87,14 @@ public class Controller
         }
     }
     
+    /**
+     * When incoming socket is accepted, we new to create a new Message 
+     * object that will contain the broken down fields for easy access.
+     * 
+     * @param incomingMsg
+     * @return
+     * @throws InvalidFieldException 
+     */
     private Message createNewMessage(String incomingMsg) throws InvalidFieldException
     {
         if(incomingMsg == null)
@@ -110,6 +136,14 @@ public class Controller
         return new Message(number, to, msg, msgId);
     }    
     
+    /**
+     * Once a Message has been created, this method will handle 
+     * it by matching matching with a Phone object and then 
+     * calling upon the Phones own message handling routine. 
+     * 
+     * @param msg
+     * @throws InsufficiantBalanceException 
+     */
     private void handleMessage(Message msg) throws InsufficiantBalanceException
     {
         //Create/Get Phone
@@ -121,16 +155,23 @@ public class Controller
     }
     
     /**
-     * Applies a lock on Phones member, and goes through all phones to see
-     * if they have timedOut. Then unlocks. 
+     * Goes through a Collection of phones and notes any that have 
+     * expired/timed out. 
+     * 
+     * It will then remove the phones from a collection and say byebye
+     * to them.
+     * 
      */
     private synchronized void cullPhones()
     {
         LOG.log(Level.INFO, "Culling Inactive Phones");
-        //TODO Comment
-        ArrayList<String>      phonesToRemove = new ArrayList<>();
         
-        //TODO Lock
+        /**
+         * Used to keep note of any phones to remove. Rather than removing 
+         * them from the hashmap during iteration.
+         */
+        ArrayList<String>      phonesToRemove = new ArrayList<>();
+                
         HashMap<String, Phone> phones = model.getPhones();
         
         //If no phones then just return.
@@ -175,6 +216,10 @@ public class Controller
         }
     }
     
+    /**
+     * Simple Thread that will wait for a certain amount of time
+     * and then call cullPhones. 
+     */
     class Culler extends Thread
     {
         private boolean running = false;

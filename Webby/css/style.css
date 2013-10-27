@@ -22,3 +22,38 @@
 .lineBreak {
 	border: solid 1px black;
 }
+
+#conversation {
+background: #fff;
+border-radius: 0;
+border: 1px solid #bbb;
+padding: 5px;
+}
+
+.from {
+font-family: monospace;
+color: #fff;
+font-size: 12px;
+}
+
+.time {
+font-size: 12px;
+color: #fff;
+margin-left: 10px;
+font-family: monospace;
+}
+
+.message {
+border: 1px solid #559;
+border-radius: 4px;
+background: #44f;
+color: #eef;
+padding: 0 8px;
+margin-bottom: 5px;
+}
+
+.message.bot {
+background: #4c4;
+border: 1px solid #595;
+text-align: right;
+}

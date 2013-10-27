@@ -40,7 +40,7 @@
                 <li>and dont have 3g</li>
                 <li>... or 4g</li>
                 <li>and you only have 2g</li>
-                <li> then send a message and have a chat!</li>  
+                <li> then send a message and have a chat!</li>
               </ul>
           </div>
 
@@ -62,11 +62,15 @@
           <div class="span6">
             <h3>Peruse my Exchanges</h3>
 
-            <form class="form-horizontal" action=".">
-              <div class="control-group"> 
+            <form id="phoneform" class="form-horizontal" action=".">
+              <div class="control-group">
                 <div class="right">
                   <div class="row">
+<<<<<<< HEAD
                     <input type="text" id="inputPhone" placeholder="447860033078">  
+=======
+                    <input type="text" id="inputPhone" placeholder="447717214711" value="447905309185">
+>>>>>>> be531008599cdfc0e8017da841b6c9eb6e47189e
                     <button type="submit" class="btn">Sign in</button>
 
                   </div>
@@ -77,7 +81,14 @@
           </div>
 
           <div class="span6">
+<<<<<<< HEAD
             <h3>Message History for <span id="msgHist">...</span></h4>
+=======
+            <h4>Message History for <span id="msgHist">...</span></h4>
+            <div id="conversation">
+
+            </div>
+>>>>>>> be531008599cdfc0e8017da841b6c9eb6e47189e
           </div>
         </div>
         <hr>
@@ -108,7 +119,7 @@
 
 
 
-    
+
 
     <footer class="text-center">
       <small>
