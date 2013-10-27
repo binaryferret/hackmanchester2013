@@ -1,5 +1,7 @@
 package clockwork;
 
+import clockwork.exception.InsufficiantBalanceException;
+import com.clockworksms.Balance;
 import com.clockworksms.ClockWorkSmsService;
 import com.clockworksms.ClockworkException;
 import com.clockworksms.ClockworkSmsResult;
@@ -110,7 +112,7 @@ public class Phone
      * @param key
      * @param msg 
      */
-    public void sendMessage(String key, Message msg)
+    public void sendMessage(String key, Message msg) throws InsufficiantBalanceException
     {        
         try
         {
@@ -154,6 +156,10 @@ public class Phone
             //TODO Improve log message, and recover from the exception.
             LOG.log(Level.SEVERE, "Phone Exception", excep);            
         }
+        catch(InsufficiantBalanceException excep)
+        {
+            throw excep;
+        }        
         catch(Exception excep)
         {
             //TODO Improve log message, and recover from the exception.
@@ -162,10 +168,17 @@ public class Phone
     }
     
     //TODO
-    private boolean sendSMS(String key, String msg) throws ClockworkException
+    private boolean sendSMS(String key, String msg) throws ClockworkException, InsufficiantBalanceException
     {
         SMS sms = new SMS(number, msg);
         ClockWorkSmsService service = new ClockWorkSmsService(key);
+        
+        Balance balance = service.checkBalance();
+        if(balance.getBalance() < 0.10)
+        {
+            throw new InsufficiantBalanceException();
+        }
+                
         ClockworkSmsResult  result  = service.send(sms);
 
         if(result.isSuccess())
@@ -219,7 +232,7 @@ public class Phone
      * 
      * @param msg 
      */
-    public void bye(String key, String msg) throws ClockworkException
+    public void bye(String key, String msg) throws ClockworkException, InsufficiantBalanceException
     {        
         sendSMS(key, msg);
     }

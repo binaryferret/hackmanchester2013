@@ -1,5 +1,6 @@
 package clockwork;
 
+import clockwork.exception.InsufficiantBalanceException;
 import clockwork.exception.InvalidFieldException;
 import com.clockworksms.ClockworkException;
 import java.io.BufferedReader;
@@ -51,7 +52,7 @@ public class Controller
      * //TODO tidy up
      * @param incoming 
      */
-    public void acceptIncoming(Socket socket) throws IOException, InvalidFieldException
+    public void acceptIncoming(Socket socket) throws IOException, InvalidFieldException, InsufficiantBalanceException
     {
         if(socket == null)
         {
@@ -109,7 +110,7 @@ public class Controller
         return new Message(number, to, msg, msgId);
     }    
     
-    private void handleMessage(Message msg)
+    private void handleMessage(Message msg) throws InsufficiantBalanceException
     {
         //Create/Get Phone
         Phone phone = model.getPhone(msg.getNumber());
@@ -161,6 +162,10 @@ public class Controller
             Phone phone = phones.remove(number);
             try{
                 phone.bye(model.getKey(), "This ends the conversation");
+            }
+            catch(InsufficiantBalanceException excep)
+            {
+                LOG.log(Level.WARNING, "Insufficiant funds to send Bye SMS.");
             }
             catch(ClockworkException excep)
             {

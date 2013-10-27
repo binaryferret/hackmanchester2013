@@ -1,5 +1,6 @@
 package clockwork;
 
+import clockwork.exception.InsufficiantBalanceException;
 import clockwork.exception.InvalidFieldException;
 import clockwork.exception.InvalidKeyException;
 import java.io.FileInputStream;
@@ -73,9 +74,13 @@ public class Server
         {
             LOG.log(Level.SEVERE, "Unable to start. Invalid Key", excep);
         }
+        catch(InsufficiantBalanceException excep)
+        {
+            LOG.log(Level.SEVERE, "InsufficiantBalanceException thrown. Stopping Service");            
+        }
         catch(IOException excep)
         {
             LOG.log(Level.SEVERE, "IOException thrown in main. ", excep);           
-        }
+        }        
     }
 }
