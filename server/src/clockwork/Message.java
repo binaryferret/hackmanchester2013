@@ -3,8 +3,10 @@ package clockwork;
 import clockwork.exception.InvalidFieldException;
 
 /**
- *
- * //TODO
+ * Simple Class  that describes a message that is generally created
+ * from an incoming data stream from the incoming socket. The data is 
+ * built from the message that is sent through via Clockwork server.
+ * 
  * @author BuckleWoods (Nathan Buckley, Andrew Isherwood, Joe Westwood)
  */
 public class Message 
