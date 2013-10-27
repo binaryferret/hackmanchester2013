@@ -74,9 +74,11 @@ public class Controller
         {
             throw new InvalidFieldException("Controller.createNewMessage incomingMsg parameter is null.");
         }
-
+        
         String number   = null;
+        String to       = null;
         String msg      = null;
+        String msgId   = null;
         
         String[] fields = incomingMsg.split("&");
 
@@ -89,42 +91,23 @@ public class Controller
                 {
                     number = pair[1];
                 }
+                else if(pair[0].toLowerCase().equals("to"))
+                {
+                    to = pair[1];
+                }
                 else if(pair[0].toLowerCase().equals("msg"))
                 {
                     msg = pair[1];
-                }                    
+                }
+                else if(pair[0].toLowerCase().equals("msg_id"))
+                {
+                    msgId = pair[1];
+                }
             }
-        }
+        }       
         
-        if(!isNumberValid(number))
-        {
-            throw new InvalidFieldException("Controller.createNewMessage recieved invalid number: number = " + number);            
-        }
-        if(!isMsgValid(msg))
-        {
-            throw new InvalidFieldException("Controller.createNewMessage recieved invalid msg: msg = " + msg);            
-        }
-        
-        return new Message(number, msg);
-    }
-    
-    private boolean isNumberValid(String number)
-    {
-        if(number == null || number.length() == 0)
-        {
-            return false;
-        }
-        return true;
-    }
-    
-    private boolean isMsgValid(String msg)
-    {
-        if(msg == null || msg.length() == 0)
-        {
-            return false;            
-        }
-        return true;
-    }
+        return new Message(number, to, msg, msgId);
+    }    
     
     private void handleMessage(Message msg)
     {
@@ -132,7 +115,8 @@ public class Controller
         Phone phone = model.getPhone(msg.getNumber());
                         
         //Send Message from phone to ai, and then response to phone.
-        phone.sendMessage(model.getKey(), msg.getMessage());
+        phone.sendMessage(model.getKey(), msg);
+                
     }
     
     /**

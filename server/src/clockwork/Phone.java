@@ -110,7 +110,7 @@ public class Phone
      * @param key
      * @param msg 
      */
-    public void sendMessage(String key, String msg)
+    public void sendMessage(String key, Message msg)
     {        
         try
         {
@@ -118,12 +118,7 @@ public class Phone
             {
                 //TODO Key is null.
             }
-
-            if(number == null)
-            {
-                //TODO if number is null.
-            }
-            
+                        
             //Check if we have a bot instance
             if(botSession == null)
             {
@@ -133,12 +128,15 @@ public class Phone
             }
             
             //Send Message to AI and get response.
-            String botResponse = botSession.think(msg);            
-            
+            String botResponse = botSession.think(msg.getMessage());            
             //LOG Response
             LOG.log(Level.INFO, "Bot Response: " + botResponse);
-            //Store response in database chat logs.
-            storeBotResponse(botResponse);
+            
+            //Store Message In, in database.
+            storeResponse(msg.getNumber(), msg.getTo(), msg.getMessage(), msg.getMessageID());
+                        
+            //Store Message out, in database.
+            storeResponse("BOT", msg.getNumber(), botResponse, msg.getMessageID());
             
             //Send Response from AI via SMS Try three times.
             int i = 0;
@@ -183,7 +181,7 @@ public class Phone
         }
     }
     
-    private void storeBotResponse(String msg)
+    private void storeResponse(String from, String to, String msg, String msgID)
     {
         LOG.log(Level.INFO, "Storing bot response in database");
         
@@ -191,15 +189,15 @@ public class Phone
         {           
             Connection conn = DriverManager.getConnection("jdbc:mysql://"+ credentials.getProperty("DATABASE_HOST") +"/" + credentials.getProperty("DATABASE_NAME"), credentials.getProperty("DATABASE_USER"), credentials.getProperty("DATABASE_PASS"));
             PreparedStatement preppedStatement = conn.prepareCall("INSERT INTO `log` (`from`, `to`, `content`, `msg_id`, `time`) VALUES (?, ?, ?, ?, ?)");
-
+            
             //from
-            preppedStatement.setString(1, "BOT");
+            preppedStatement.setString(1, from);
             //to
-            preppedStatement.setString(2, number);
+            preppedStatement.setString(2, to);
             //content
             preppedStatement.setString(3, msg);
             //msg_id
-            preppedStatement.setString(4, "");
+            preppedStatement.setString(4, msgID);
             //time
             preppedStatement.setLong(5, System.currentTimeMillis());
             
