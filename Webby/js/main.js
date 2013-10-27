@@ -16,7 +16,7 @@ function get_conversation( phone )
   $msgHist.text(phone)
 
   $.ajax({
-    url: "/log.php",
+    url: "../log.php",
     data: {phone:phone},
     dataType: "json",
     success: render_conversation,
