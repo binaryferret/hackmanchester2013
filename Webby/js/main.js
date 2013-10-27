@@ -21,6 +21,7 @@ function get_conversation( phone )
 {
   $msgHist.text(phone)
 
+<<<<<<< HEAD
   var data = logs_because_server_is_demented[phone]
   if( data )
   {
@@ -42,6 +43,17 @@ function get_conversation( phone )
   //     alert("Error getting conversation for '"+phone+"' ("+error+")")
   //   }
   // })
+=======
+  $.ajax({
+    url: "../log.php",
+    data: {phone:phone},
+    dataType: "json",
+    success: render_conversation,
+    error: function( jqxhr, status, error ){
+      alert("Error getting conversation for '"+phone+"' ("+error+")")
+    }
+  })
+>>>>>>> 43defa92a06b44914d7b12b571d0c5c84eaf8bbc
 }
 
 function render_conversation( data )

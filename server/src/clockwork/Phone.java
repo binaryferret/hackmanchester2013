@@ -175,7 +175,11 @@ public class Phone
                     throw new ClockworkException("Unable to send SMS. Tried three times");
                 }
                 i++;
-            }                        
+            } 
+            /**
+             * Update last activity.
+             */
+            lastActivity = System.currentTimeMillis();
         }
         catch(ClockworkException excep) 
         {
@@ -207,8 +211,10 @@ public class Phone
         SMS sms = new SMS(number, msg);
         ClockWorkSmsService service = new ClockWorkSmsService(key);
         
-        Balance balance = service.checkBalance();
-        if(balance.getBalance() < 0.10)
+        //servicve.checkBalance throwing weird issue. 
+        //Commented out for now. 
+        long credit = service.checkCredit();
+        if(credit < 5)
         {
             throw new InsufficiantBalanceException();
         }
@@ -237,7 +243,7 @@ public class Phone
      */
     private void storeResponse(String from, String to, String msg, String msgID)
     {
-        LOG.log(Level.INFO, "Storing bot response in database");
+        LOG.log(Level.INFO, "Storing Response in database");
         
         try
         {           
